@@ -173,6 +173,7 @@ void ReverseTravel(NodeTree *node) {
     cout << node->key << " ";
 }
 
+
 void SymmetricTravel(NodeTree *node) {
     if (node == nullptr) {
         return;
