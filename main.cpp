@@ -205,7 +205,7 @@ int main() {
     int select = 0;
     while ((select < 1) or (select > 3)) {
         cout << "1 - Файл" << endl << "2 - Ввести вручную" << endl << "3 - Заполнить случайными числами" << endl
-             << "Âûáåðèòå=";
+             << "Выберите=";
         cin >> select;
         cout << endl;
     }
