@@ -160,6 +160,7 @@ void DirectTravel(NodeTree *node) {
 }
 
 void PrintTree(Tree &t) {
+    //Вывод в виде дерева
     DirectTravel(t.Top);
 }
 
@@ -189,6 +190,7 @@ double SummTree(NodeTree *node) {
 }
 
 void DeleteTree(Tree &t) {
+    //!!! void DeleteTree(узел) + рукурсия
     while (!IsTreeEmpty(t)) {
         DeleteNode(t, t.Top->key);
     }
