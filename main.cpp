@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <ctime>
+#include <iomanip>
 
 using namespace std;
 
@@ -150,17 +151,17 @@ bool IsTreeEmpty(Tree &t) {
     return (t.Top == nullptr);
 }
 
-void DirectTravel(NodeTree *node) {
-    if (node == nullptr) {
-        return;
+void DirectTravel(NodeTree *node, int l = 1) {
+    if (node != nullptr) {
+        DirectTravel(node->Right, l + 1);
+        for (int i = 0; i < l; i++)
+            cout << "    ";
+        cout << node->key << endl;
+        DirectTravel(node->Left, l + 1);
     }
-    cout << node->key << " ";
-    DirectTravel(node->Left);
-    DirectTravel(node->Right);
 }
 
 void PrintTree(Tree &t) {
-    //Ð’Ñ‹Ð²Ð¾Ð´ Ð² Ð²Ð¸Ð´Ðµ Ð´ÐµÑ€ÐµÐ²Ð°
     DirectTravel(t.Top);
 }
 
@@ -190,11 +191,22 @@ double SummTree(NodeTree *node) {
     return node->key + SummTree(node->Left) + SummTree(node->Right);
 }
 
-void DeleteTree(Tree &t) {
-    //!!! void DeleteTree(ÑƒÐ·ÐµÐ») + Ñ€ÐµÐºÑƒÑ€ÑÐ¸Ñ
-    while (!IsTreeEmpty(t)) {
-        DeleteNode(t, t.Top->key);
+//void DeleteTree(Tree &t) {
+//    //!!! void DeleteTree(óçåë) + ðåêóðñèÿ
+//    while (!IsTreeEmpty(t)) {
+//        DeleteNode(t, t.Top->key);
+//    }
+//}
+
+void DeleteTree(NodeTree *node) {
+    if (node!= nullptr) {
+        DeleteTree(node->Left);
+        DeleteTree(node->Right);
+
+        free(&node->key);
+        free(node);
     }
+
 }
 
 int main() {
@@ -205,8 +217,8 @@ int main() {
     int quant = 0;
     int select = 0;
     while ((select < 1) or (select > 3)) {
-        cout << "1 - Ð¤Ð°Ð¹Ð»" << endl << "2 - Ð’Ð²ÐµÑÑ‚Ð¸ Ð²Ñ€ÑƒÑ‡Ð½ÑƒÑŽ" << endl << "3 - Ð—Ð°Ð¿Ð¾Ð»Ð½Ð¸Ñ‚ÑŒ ÑÐ»ÑƒÑ‡Ð°Ð¹Ð½Ñ‹Ð¼Ð¸ Ñ‡Ð¸ÑÐ»Ð°Ð¼Ð¸" << endl
-             << "Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ=";
+        cout << "1 - Ôàéë" << endl << "2 - Ââåñòè âðó÷íóþ" << endl << "3 - Çàïîëíèòü ñëó÷àéíûìè ÷èñëàìè" << endl
+             << "Âûáåðèòå=";
         cin >> select;
         cout << endl;
     }
@@ -219,9 +231,9 @@ int main() {
         FileIn.close();
     }
     if (select == 2) {
-        cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»-Ð²Ð¾" << endl;
+        cout << "Ââåäèòå êîë-âî" << endl;
         cin >> quant;
-        cout << "Ð—Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ" << endl;
+        cout << "Çíà÷åíèå" << endl;
         for (int count = 1; count <= quant; count++) {
             cin >> num;
             AddNode(tr, num);
@@ -230,7 +242,7 @@ int main() {
     }
     if (select == 3) {
         while ((quant < 1)) {
-            cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»-Ð²Ð¾" << endl;
+            cout << "Ââåäèòå êîë-âî" << endl;
             cin >> quant;
             srand(time(nullptr));
             for (int count = 1; count <= quant; count++) {
@@ -238,9 +250,11 @@ int main() {
             }
         }
     }
-    cout << "Ð”ÐµÑ€ÐµÐ²Ð¾ : ";
+    cout << "Äåðåâî : " << endl;
     PrintTree(tr);
     cout << endl;
-    cout << "Ð”ÐµÑ€ÐµÐ²Ð¾ ÑÑ€ÐµÐ´Ð½ÐµÐµ : " << SummTree(tr.Top) / quant << endl;
-    DeleteTree(tr);
+
+    cout << "Äåðåâî ñðåäíåå : " << SummTree(tr.Top) / quant << endl;
+    DeleteTree(tr.Top);
+
 }
